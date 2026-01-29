@@ -18,7 +18,7 @@ const ProgressPage: React.FC = () => {
     const fetchProgress = async () => {
       try {
         const response = await progressAPI.getUserProgress();
-        setProgress(response.data);
+        setProgress(response.data.data);
         setLoading(false);
       } catch (err) {
         setError('Error al cargar el progreso');

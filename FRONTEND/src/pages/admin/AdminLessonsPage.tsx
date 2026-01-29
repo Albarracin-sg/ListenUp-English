@@ -21,7 +21,9 @@ const AdminLessonsPage: React.FC = () => {
     const fetchLessons = async () => {
       try {
         const response = await lessonsAPI.getAll();
-        setLessons(response.data);
+        // Asegurarse de que response.data es un array
+        const lessonsData = Array.isArray(response.data.data) ? response.data.data : [];
+        setLessons(lessonsData);
         setLoading(false);
       } catch (err) {
         setError('Error al cargar las lecciones');

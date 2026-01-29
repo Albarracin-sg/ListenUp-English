@@ -28,10 +28,10 @@ const LessonDetailPage: React.FC = () => {
         if (!id) return;
 
         const lessonResponse = await lessonsAPI.getById(id);
-        setLesson(lessonResponse.data);
+        setLesson(lessonResponse.data.data);
 
         const questionsResponse = await questionsAPI.getByLessonId(id);
-        setQuestions(questionsResponse.data);
+        setQuestions(questionsResponse.data.data);
         setLoading(false);
       } catch (err) {
         setError('Error al cargar la lección o preguntas');

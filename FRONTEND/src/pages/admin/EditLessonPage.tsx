@@ -30,8 +30,8 @@ const EditLessonPage: React.FC = () => {
         if (!id) return;
         
         const response = await lessonsAPI.getById(id);
-        const lessonData = response.data;
-        
+        const lessonData = response.data.data;
+
         setLesson(lessonData);
         setTitle(lessonData.title);
         setDescription(lessonData.description);
