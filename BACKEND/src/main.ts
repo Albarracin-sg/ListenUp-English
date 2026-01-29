@@ -6,9 +6,18 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Reflector } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles.guard';
+import * as cors from 'cors';
+import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Habilitar CORS
+  app.enableCors({
+    origin: [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:3000'], // Permitir el origen del frontend desde variable de entorno
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   // Aplicar ValidationPipe globalmente
   app.useGlobalPipes(
@@ -39,6 +48,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // Configurar un prefijo global para todas las rutas
+  app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3000);
 }
