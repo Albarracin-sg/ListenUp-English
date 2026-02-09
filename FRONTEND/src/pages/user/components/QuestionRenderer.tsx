@@ -4,6 +4,7 @@ import { QUESTION_TYPES } from '../../../utils/constants';
 import MultipleChoice from './MultipleChoice';
 import TrueFalse from './TrueFalse';
 import FillBlank from './FillBlank';
+import OpenQuestion from './OpenQuestion';
 
 interface QuestionRendererProps {
   question: Question;
@@ -32,6 +33,14 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({ question, answer, o
     case QUESTION_TYPES.FILL_BLANK:
       return (
         <FillBlank
+          question={question}
+          answer={answer}
+          onAnswerChange={onAnswerChange}
+        />
+      );
+    case QUESTION_TYPES.OPEN:
+      return (
+        <OpenQuestion
           question={question}
           answer={answer}
           onAnswerChange={onAnswerChange}

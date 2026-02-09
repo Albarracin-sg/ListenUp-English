@@ -5,6 +5,7 @@ export enum QuestionType {
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
   TRUE_FALSE = 'TRUE_FALSE',
   FILL_BLANK = 'FILL_BLANK',
+  OPEN = 'OPEN',
 }
 
 export class CreateQuestionDto {

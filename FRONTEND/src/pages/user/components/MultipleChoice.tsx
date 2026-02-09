@@ -8,11 +8,13 @@ interface MultipleChoiceProps {
 }
 
 const MultipleChoice: React.FC<MultipleChoiceProps> = ({ question, answer, onAnswerChange }) => {
+  const options = question.optionsForMultipleChoice || question.options || [];
+
   return (
     <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
       <h4 className="text-lg font-medium text-gray-900 mb-4">{question.question}</h4>
       <div className="space-y-3">
-        {question.optionsForMultipleChoice?.map((option, index) => (
+        {options.map((option, index) => (
           <div key={index} className="flex items-start">
             <div className="flex items-center h-5">
               <input

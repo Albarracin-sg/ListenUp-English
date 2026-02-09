@@ -11,6 +11,7 @@ export interface Question {
   id: string;
   type: string;
   question: string;
+  options?: string[]; // New field from backend
   optionsForMultipleChoice?: string[];
   optionsForFillBlank?: string[];
   correctAnswer: string;

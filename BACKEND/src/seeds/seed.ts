@@ -34,7 +34,7 @@ async function main() {
       title: 'Introduction to English',
       description: 'Introductory lesson for beginners',
       level: 'beginner',
-      youtubeUrl: 'https://www.youtube.com/watch?v=eIC-h4NDXrc', // Video from BBC Learning English
+      youtubeUrl: 'https://youtu.be/ql9-75jhQxE', // Video from BBC Learning English
       isPublished: true,
     },
   });
@@ -47,7 +47,7 @@ async function main() {
       title: 'Greetings and Introductions',
       description: 'Learn how to greet and introduce yourself in English',
       level: 'beginner',
-      youtubeUrl: 'https://www.youtube.com/watch?v=J97q4IlB_fw', // Video from Easy English
+      youtubeUrl: 'https://youtu.be/V7Dvcy0gq-U', // Video from Easy English
       isPublished: true,
     },
   });
@@ -60,7 +60,7 @@ async function main() {
       title: 'Present Tense Verbs',
       description: 'Learn present tense verbs',
       level: 'beginner',
-      youtubeUrl: 'https://www.youtube.com/watch?v=KkkdgcDxdFE', // Video from Learn English with real videos
+      youtubeUrl: 'https://youtu.be/NAVz0yfBZGo?si=O4IpzTE_MEiTSrgY', // Video from Learn English with real videos
       isPublished: true,
     },
   });
@@ -73,7 +73,7 @@ async function main() {
       title: 'Past Tense',
       description: 'Learn to speak about the past',
       level: 'intermediate',
-      youtubeUrl: 'https://www.youtube.com/watch?v=5d5URWMgWRc', // Video from intermediate English
+      youtubeUrl: 'https://youtu.be/_3Jl-4qrE5A?si=9EIuT4h83EWVfzEe', // Video from intermediate English
       isPublished: true,
     },
   });
@@ -86,7 +86,7 @@ async function main() {
       title: 'Conditionals',
       description: 'Learn how to form conditionals in English',
       level: 'intermediate',
-      youtubeUrl: 'https://www.youtube.com/watch?v=Jf2vY6LwFqg', // Video from intermediate English
+      youtubeUrl: 'https://youtu.be/kxocDuw0cKw', // Video from intermediate English
       isPublished: true,
     },
   });
@@ -99,7 +99,7 @@ async function main() {
       title: 'Idiomatic Expressions',
       description: 'Learn common idiomatic expressions',
       level: 'advanced',
-      youtubeUrl: 'https://www.youtube.com/watch?v=8CxbR6DY59M', // Video from advanced English
+      youtubeUrl: 'https://youtu.be/MVGGGo_a5tI', // Video from advanced English
       isPublished: true,
     },
   });
@@ -156,6 +156,13 @@ async function main() {
         question: '"Dog" means dog in English.',
         options: ['True', 'False'],
         correctAnswer: 'True',
+      },
+      {
+        lessonId: lesson1.id,
+        type: 'OPEN' as any,
+        question: 'Write a short sentence in English to say hello and your name.',
+        options: [],
+        correctAnswer: 'Hello my name is', // Simple check, real app might need more logic
       },
     ],
   });

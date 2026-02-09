@@ -11,6 +11,7 @@ export const QUESTION_TYPES = {
   MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
   TRUE_FALSE: 'TRUE_FALSE',
   FILL_BLANK: 'FILL_BLANK',
+  OPEN: 'OPEN',
 };
 
 export const ROLE = {

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { lessonsAPI } from '../../api/lessons';
 import { questionsAPI } from '../../api/questions';
 import { progressAPI } from '../../api/progress';
+import { answersAPI } from '../../api/answers';
 import { useAuthStore } from '../../store/auth.store';
 import { LEVELS } from '../../utils/constants';
 import type { Lesson, Question } from '../../types/lesson.types';
@@ -21,6 +22,21 @@ const LessonDetailPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const user = useAuthStore((state) => state.user);
+
+  const getYouTubeId = (url: string) => {
+    if (!url) return '';
+    try {
+      if (url.includes('youtu.be/')) {
+        return url.split('youtu.be/')[1].split(/[?#]/)[0];
+      }
+      if (url.includes('v=')) {
+        return url.split('v=')[1].split(/[&?#]/)[0];
+      }
+      return '';
+    } catch (e) {
+      return '';
+    }
+  };
 
   useEffect(() => {
     const fetchLessonAndQuestions = async () => {
@@ -55,23 +71,33 @@ const LessonDetailPage: React.FC = () => {
     
     setIsSubmitting(true);
     
-    // Calcular puntaje
-    let correctCount = 0;
-    questions.forEach(question => {
-      if (userAnswers[question.id] === question.correctAnswer) {
-        correctCount++;
-      }
-    });
-    
-    const calculatedScore = Math.round((correctCount / questions.length) * 100);
-    setScore(calculatedScore);
-    
     try {
+      // Validar cada respuesta con el backend
+      let correctCount = 0;
+      
+      const validationPromises = questions.map(async (question) => {
+        const answer = userAnswers[question.id] || '';
+        try {
+          const response = await answersAPI.validate(question.id, answer);
+          if (response.data.data.isCorrect) {
+            correctCount++;
+          }
+        } catch (err) {
+          console.error(`Error validating question ${question.id}:`, err);
+        }
+      });
+
+      await Promise.all(validationPromises);
+      
+      const calculatedScore = Math.round((correctCount / questions.length) * 100);
+      setScore(calculatedScore);
+      
       // Guardar progreso
       await progressAPI.createOrUpdate(id, calculatedScore);
       setShowResults(true);
     } catch (err) {
-      console.error('Error saving progress:', err);
+      console.error('Error in submission process:', err);
+      setError('Hubo un error al procesar tus respuestas. Por favor, intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -171,12 +197,22 @@ const LessonDetailPage: React.FC = () => {
                 <h4 className="text-lg font-medium text-gray-900 mb-4">Video de la Lección</h4>
                 <div className="aspect-w-16 aspect-h-9">
                   <iframe
-                    src={`https://www.youtube.com/embed/${lesson.youtubeUrl.split('v=')[1]?.split('&')[0]}`}
+                    src={`https://www.youtube.com/embed/${getYouTubeId(lesson.youtubeUrl)}?rel=0&enablejsapi=1`}
                     title={lesson.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className="w-full h-96 rounded-lg"
+                    className="w-full h-96 rounded-lg shadow-inner bg-black"
                   ></iframe>
+                </div>
+                <div className="mt-2 text-right">
+                  <a 
+                    href={lesson.youtubeUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm text-indigo-600 hover:text-indigo-500"
+                  >
+                    ¿No puedes ver el video? Míralo en YouTube ↗
+                  </a>
                 </div>
               </div>
 
