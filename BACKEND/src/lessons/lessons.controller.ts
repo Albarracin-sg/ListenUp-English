@@ -1,10 +1,26 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { LessonsService } from './services/lessons.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateLessonDto, UpdateLessonDto } from './dto/lesson.dto';
-import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { Role } from '@prisma/client';
+import { Role } from '../auth/enums/role.enum';
 
 @ApiTags('Lessons')
 @Controller('lessons')
@@ -13,7 +29,11 @@ export class LessonsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all published lessons' })
-  @ApiQuery({ name: 'level', required: false, description: 'Filter lessons by level (optional)' })
+  @ApiQuery({
+    name: 'level',
+    required: false,
+    description: 'Filter lessons by level (optional)',
+  })
   @ApiResponse({ status: 200, description: 'Return all published lessons' })
   async findAll(@Query('level') level?: string) {
     return this.lessonsService.findAll(level);
