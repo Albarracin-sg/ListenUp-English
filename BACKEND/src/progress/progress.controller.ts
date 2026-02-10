@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateProgressDto } from './dto/progress.dto';
 import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@ApiTags('Progress')
+@ApiTags('Progress') 
 @Controller('progress')
 export class ProgressController {
   constructor(private progressService: ProgressService) {}
