@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_BLANK
+  OPEN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  progress Progress[]
+
+  @@map("users")
+  @@index([email])
+}
+
+model Lesson {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  level       String     // beginner, intermediate, advanced
+  youtubeUrl  String
+  isPublished Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relaciones
+  questions Question[]
+  progress  Progress[]
+
+  @@map("lessons")
+  @@index([level])
+  @@index([isPublished])
+}
+
+model Question {
+  id           String         @id @default(cuid())
+  lessonId     String
+  type         QuestionType
+  question     String
+  options      String[]       // Array de opciones para múltiple elección
+  correctAnswer String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  // Relaciones
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+  @@index([lessonId])
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  score     Int      // Porcentaje de aciertos
+  completed DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("progress")
+  @@index([userId, lessonId])
+}
