@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "env": {
+    "DEPD_SUPPRESS": "true",
+    "DEPD_THROW": "0",
+    "DEPD_WARN": "0",
+    "NO_DEPRECATION": "true"
+  },
   "functions": {
     "api/**/*.ts": {
       "includeFiles": "node_modules/{.prisma,@prisma}/**"
