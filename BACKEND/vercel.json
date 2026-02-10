@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "dist/**/*.js": {
+      "includeFiles": [
+        "node_modules/.prisma/client/**",
+        "node_modules/@prisma/client/**",
+        "prisma/schema.prisma"
+      ]
+    }
+  }
+}
