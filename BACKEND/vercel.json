@@ -1,25 +1,13 @@
 {
   "functions": {
     "dist/**/*.js": {
-      "includeFiles": [
-        "node_modules/.prisma/client/**",
-        "node_modules/@prisma/client/**",
-        "prisma/schema.prisma"
-      ]
+      "includeFiles": "node_modules/.prisma/client/**"
     },
     "src/**/*.js": {
-      "includeFiles": [
-        "node_modules/.prisma/client/**",
-        "node_modules/@prisma/client/**",
-        "prisma/schema.prisma"
-      ]
+      "includeFiles": "node_modules/.prisma/client/**"
     },
     "src/**/*.ts": {
-      "includeFiles": [
-        "node_modules/.prisma/client/**",
-        "node_modules/@prisma/client/**",
-        "prisma/schema.prisma"
-      ]
+      "includeFiles": "node_modules/.prisma/client/**"
     }
   }
 }
