@@ -18,7 +18,8 @@ const ProgressPage: React.FC = () => {
     const fetchProgress = async () => {
       try {
         const response = await progressAPI.getUserProgress();
-        setProgress(response.data.data);
+        const data = Array.isArray(response.data.data) ? response.data.data : [];
+        setProgress(data);
         setLoading(false);
       } catch (err) {
         setError('Error al cargar el progreso');
@@ -32,108 +33,134 @@ const ProgressPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Cargando progreso...</div>
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-50 to-blue-50">
+        <div className="text-lg font-semibold text-gray-700 animate-pulse">
+          Cargando progreso...
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500 text-lg">{error}</div>
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-red-50 to-orange-50">
+        <div className="bg-white px-8 py-6 rounded-xl shadow-lg text-red-500 font-medium">
+          {error}
+        </div>
       </div>
     );
   }
 
-  // Calcular estadísticas
   const totalLessons = progress.length;
   const completedLessons = progress.filter(item => item.score >= 70).length;
-  const averageScore = totalLessons > 0 
-    ? Math.round(progress.reduce((sum, item) => sum + item.score, 0) / totalLessons) 
-    : 0;
+  const averageScore =
+    totalLessons > 0
+      ? Math.round(progress.reduce((sum, item) => sum + item.score, 0) / totalLessons)
+      : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Mi Progreso</h1>
-          <p className="mt-2 text-gray-600">Seguimiento de tus lecciones completadas</p>
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-blue-50 py-10">
+      <div className="max-w-5xl mx-auto px-4">
+
+        {/* HEADER */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            Tu progreso 📈
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Sigue mejorando tu inglés cada día
+          </p>
         </div>
 
-        {/* Estadísticas generales */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <div className="flex items-center">
-                <div className="text-3xl font-bold text-indigo-600">{totalLessons}</div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Lecciones totales</h3>
-                </div>
-              </div>
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+          {/* total */}
+          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6 border border-gray-100">
+            <div className="text-4xl font-bold text-indigo-600 mb-2">
+              {totalLessons}
+            </div>
+            <div className="text-gray-600 font-medium">
+              Lecciones completadas
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <div className="flex items-center">
-                <div className="text-3xl font-bold text-green-600">{completedLessons}</div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Completadas</h3>
-                </div>
-              </div>
+          {/* completed */}
+          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6 border border-gray-100">
+            <div className="text-4xl font-bold text-green-600 mb-2">
+              {completedLessons}
+            </div>
+            <div className="text-gray-600 font-medium">
+              Aprobadas
             </div>
           </div>
 
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <div className="flex items-center">
-                <div className="text-3xl font-bold text-blue-600">{averageScore}%</div>
-                <div className="ml-4">
-                  <h3 className="text-lg font-medium text-gray-900">Promedio</h3>
-                </div>
-              </div>
+          {/* average */}
+          <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-6 border border-gray-100">
+            <div className="text-4xl font-bold text-blue-600 mb-2">
+              {averageScore}%
+            </div>
+            <div className="text-gray-600 font-medium">
+              Promedio
             </div>
           </div>
+
         </div>
 
-        {/* Detalle de progreso */}
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Detalle de Lecciones</h3>
+        {/* LIST */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+
+          <div className="px-6 py-4 border-b bg-gray-50">
+            <h3 className="text-lg font-semibold text-gray-700">
+              Historial de lecciones
+            </h3>
           </div>
-          <div className="border-t border-gray-200">
-            {progress.length === 0 ? (
-              <div className="px-4 py-5 sm:p-6 text-center">
-                <p className="text-gray-500">Aún no has completado ninguna lección.</p>
-              </div>
-            ) : (
-              <ul className="divide-y divide-gray-200">
-                {progress.map((item) => (
-                  <li key={item.id} className="px-4 py-5 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-900">{item.lessonTitle}</h4>
-                        <p className="text-sm text-gray-500">
-                          Completado el {new Date(item.createdAt).toLocaleDateString()}
-                        </p>
+
+          {progress.length === 0 ? (
+            <div className="p-10 text-center text-gray-500">
+              No has completado lecciones todavía.
+            </div>
+          ) : (
+            <div className="divide-y">
+              {progress.map((item) => {
+
+                const approved = item.score >= 70;
+
+                return (
+                  <div
+                    key={item.id}
+                    className="p-6 hover:bg-gray-50 transition flex justify-between items-center"
+                  >
+
+                    <div>
+                      <div className="font-semibold text-gray-800">
+                        {item.lessonTitle}
                       </div>
-                      <div className="flex items-center">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                          item.score >= 70 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {item.score}%
-                        </span>
+
+                      <div className="text-sm text-gray-500">
+                        {new Date(item.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+
+                    <div
+                      className={`px-4 py-1 rounded-full font-semibold text-sm ${
+                        approved
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                      }`}
+                    >
+                      {item.score}%
+                    </div>
+
+                  </div>
+                );
+
+              })}
+            </div>
+          )}
+
         </div>
+
       </div>
     </div>
   );

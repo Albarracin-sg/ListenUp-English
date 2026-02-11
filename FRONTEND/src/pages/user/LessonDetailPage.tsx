@@ -183,76 +183,138 @@ const LessonDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">{lesson.title}</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">{lesson.description}</p>
-          </div>
-          <div className="border-t border-gray-200">
-            <div className="px-4 py-5 sm:p-0">
-              {/* Video de YouTube */}
-              <div className="py-5 px-4 sm:px-6 border-b border-gray-200">
-                <h4 className="text-lg font-medium text-gray-900 mb-4">Video de la Lección</h4>
-                <div className="aspect-w-16 aspect-h-9">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${getYouTubeId(lesson.youtubeUrl)}?rel=0&enablejsapi=1`}
-                    title={lesson.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-96 rounded-lg shadow-inner bg-black"
-                  ></iframe>
-                </div>
-                <div className="mt-2 text-right">
-                  <a 
-                    href={lesson.youtubeUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-sm text-indigo-600 hover:text-indigo-500"
-                  >
-                    ¿No puedes ver el video? Míralo en YouTube ↗
-                  </a>
-                </div>
-              </div>
 
-              {/* Preguntas */}
-              <div className="py-5 px-4 sm:px-6">
-                <h4 className="text-lg font-medium text-gray-900 mb-4">Preguntas</h4>
-                
-                {questions.length === 0 ? (
-                  <p className="text-gray-500">Esta lección aún no tiene preguntas.</p>
-                ) : (
-                  <div className="space-y-6">
-                    {questions.map((question, _) => (
-                      <QuestionRenderer
-                        key={question.id}
-                        question={question}
-                        answer={userAnswers[question.id]}
-                        onAnswerChange={(answer) => handleAnswerChange(question.id, answer)}
-                      />
-                    ))}
-
-                    <div className="pt-4 flex justify-end">
-                      <button
-                        onClick={handleSubmit}
-                        disabled={isSubmitting || Object.keys(userAnswers).length < questions.length}
-                        className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white ${
-                          Object.keys(userAnswers).length < questions.length
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-700'
-                        } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-                      >
-                        {isSubmitting ? 'Enviando...' : 'Enviar respuestas'}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 to-white py-10">
+  
+  ```
+  <div className="max-w-4xl mx-auto px-4">
+  
+    {/* Header Card */}
+    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100">
+  
+      <div className="flex justify-between items-center mb-3">
+  
+        <div>
+          <h1 className="text-2xl font-bold text-indigo-600">
+            {lesson.title}
+          </h1>
+  
+          <p className="text-gray-500 mt-1">
+            {lesson.description}
+          </p>
         </div>
+  
+        <span className={`
+          px-3 py-1 rounded-full text-xs font-semibold
+          ${lesson.level === 'beginner' ? 'bg-green-100 text-green-700' : ''}
+          ${lesson.level === 'intermediate' ? 'bg-yellow-100 text-yellow-700' : ''}
+          ${lesson.level === 'advanced' ? 'bg-red-100 text-red-700' : ''}
+        `}>
+          {lesson.level.toUpperCase()}
+        </span>
+  
       </div>
+  
+    </div>
+  
+    {/* Video Card */}
+    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100">
+  
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">
+        🎥 Video de la lección
+      </h2>
+  
+      <div className="rounded-xl overflow-hidden shadow-md">
+        <iframe
+          src={`https://www.youtube.com/embed/${getYouTubeId(lesson.youtubeUrl)}`}
+          title={lesson.title}
+          allowFullScreen
+          className="w-full h-96 bg-black"
+        />
+      </div>
+  
+      <div className="mt-3 text-right">
+        <a
+          href={lesson.youtubeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-indigo-600 text-sm hover:underline"
+        >
+          Ver en YouTube ↗️
+        </a>
+      </div>
+  
+    </div>
+  
+    {/* Questions Card */}
+    <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+  
+      <h2 className="text-lg font-semibold text-gray-800 mb-6">
+        🧠 Preguntas
+      </h2>
+  
+      {questions.length === 0 ? (
+  
+        <div className="text-center py-8">
+          <p className="text-gray-500">
+            Esta lección aún no tiene preguntas
+          </p>
+        </div>
+  
+      ) : (
+  
+        <div className="space-y-6">
+  
+          {questions.map((question) => (
+  
+            <div
+              key={question.id}
+              className="p-4 border border-gray-200 rounded-xl bg-gray-50"
+            >
+              <QuestionRenderer
+                question={question}
+                answer={userAnswers[question.id]}
+                onAnswerChange={(answer) =>
+                  handleAnswerChange(question.id, answer)
+                }
+              />
+            </div>
+  
+          ))}
+  
+          {/* Submit Button */}
+          <div className="pt-4">
+  
+            <button
+              onClick={handleSubmit}
+              disabled={
+                isSubmitting ||
+                Object.keys(userAnswers).length < questions.length
+              }
+              className={`
+                w-full py-3 rounded-xl font-semibold text-white transition
+  
+                ${
+                  Object.keys(userAnswers).length < questions.length
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-indigo-600 hover:bg-indigo-700 shadow-md'
+                }
+              `}
+            >
+              {isSubmitting
+                ? 'Enviando respuestas...'
+                : 'Finalizar lección'}
+            </button>
+  
+          </div>
+  
+        </div>
+  
+      )}
+  
+    </div>
+  
+  </div>
     </div>
   );
 };

@@ -10,92 +10,106 @@ const Navbar: React.FC = () => {
     logout();
   };
 
-
   return (
-    <nav className="bg-indigo-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="shrink-0">
-              <Link to={isAuthenticated ? (user?.role === 'ADMIN' ? '/admin/lessons' : '/user/lessons') : '/'} className="text-white text-xl font-bold">
-                ListenUp English
+    <nav className="bg-white border-b shadow-sm">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-16">
+
+          {/* Logo */}
+          <Link
+            to={isAuthenticated ? (user?.role === 'ADMIN' ? '/admin/lessons' : '/user/lessons') : '/'}
+            className="flex items-center gap-2"
+          >
+            <div className="bg-indigo-600 text-white font-bold px-3 py-1 rounded-lg">
+              LU
+            </div>
+            <span className="text-gray-800 font-semibold text-lg">
+              ListenUp English
+            </span>
+          </Link>
+
+          {/* Navigation */}
+          <div className="flex items-center gap-4">
+
+            {isAuthenticated && user?.role === 'STUDENT' && (
+              <>
+                <Link
+                  to="/user/lessons"
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    location.pathname === '/user/lessons'
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  Lessons
+                </Link>
+
+                <Link
+                  to="/user/progress"
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    location.pathname === '/user/progress'
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  Progress
+                </Link>
+              </>
+            )}
+
+            {isAuthenticated && user?.role === 'ADMIN' && (
+              <Link
+                to="/admin/lessons"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  location.pathname === '/admin/lessons'
+                    ? 'bg-indigo-100 text-indigo-600'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Admin Lessons
               </Link>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                {isAuthenticated && user?.role === 'ADMIN' && (
-                  <>
-                    <Link
-                      to="/admin/lessons"
-                      className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        location.pathname === '/admin/lessons'
-                          ? 'bg-indigo-700 text-white'
-                          : 'text-white hover:bg-indigo-500'
-                      }`}
-                    >
-                      Lecciones
-                    </Link>
-                  </>
-                )}
-                {isAuthenticated && user?.role === 'STUDENT' && (
-                  <>
-                    <Link
-                      to="/user/lessons"
-                      className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        location.pathname === '/user/lessons'
-                          ? 'bg-indigo-700 text-white'
-                          : 'text-white hover:bg-indigo-500'
-                      }`}
-                    >
-                      Mis Lecciones
-                    </Link>
-                    <Link
-                      to="/user/progress"
-                      className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        location.pathname === '/user/progress'
-                          ? 'bg-indigo-700 text-white'
-                          : 'text-white hover:bg-indigo-500'
-                      }`}
-                    >
-                      Mi Progreso
-                    </Link>
-                  </>
-                )}
+            )}
+
+            {/* Right side */}
+            {isAuthenticated ? (
+              <div className="flex items-center gap-3 ml-4">
+
+                {/* User email */}
+                <div className="bg-gray-100 px-3 py-1 rounded-lg text-sm text-gray-700">
+                  {user?.email}
+                </div>
+
+                {/* Logout */}
+                <button
+                  onClick={handleLogout}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                >
+                  Logout
+                </button>
+
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center gap-2 ml-4">
+
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-indigo-600 px-3 py-2 text-sm font-medium"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                >
+                  Register
+                </Link>
+
+              </div>
+            )}
+
           </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
-              {isAuthenticated ? (
-                <div className="flex items-center">
-                  <span className="text-white mr-4 text-sm hidden md:inline">
-                    {user?.email}
-                  </span>
-                  <button
-                    onClick={handleLogout}
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium bg-indigo-700 hover:bg-indigo-800"
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              ) : (
-                <div className="flex space-x-2">
-                  <Link
-                    to="/login"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-500"
-                  >
-                    Iniciar sesión
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-500"
-                  >
-                    Registrarse
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
+
         </div>
       </div>
     </nav>
