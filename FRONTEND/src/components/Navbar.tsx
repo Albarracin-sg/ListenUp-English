@@ -54,6 +54,17 @@ const Navbar: React.FC = () => {
                 >
                   Progress
                 </Link>
+
+                <Link
+                  to="/user/vocabulary"
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    location.pathname === '/user/vocabulary'
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  Vocabulary
+                </Link>
               </>
             )}
 

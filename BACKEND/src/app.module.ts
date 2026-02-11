@@ -6,6 +6,7 @@ import { LessonsModule } from './lessons/lessons.module';
 import { QuestionsModule } from './questions/questions.module';
 import { AnswersModule } from './answers/answers.module';
 import { ProgressModule } from './progress/progress.module';
+import { VocabularyModule } from './vocabulary/vocabulary.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProgressModule } from './progress/progress.module';
     QuestionsModule,
     AnswersModule,
     ProgressModule,
+    VocabularyModule,
   ],
   controllers: [],
   providers: [],

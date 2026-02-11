@@ -5,6 +5,7 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import LessonsPage from '../pages/user/LessonsPage';
 import LessonDetailPage from '../pages/user/LessonDetailPage';
 import ProgressPage from '../pages/user/ProgressPage';
+import VocabularyPage from '../pages/user/VocabularyPage';
 import AdminLessonsPage from '../pages/admin/AdminLessonsPage';
 import CreateLessonPage from '../pages/admin/CreateLessonPage';
 import EditLessonPage from '../pages/admin/EditLessonPage';
@@ -42,6 +43,14 @@ const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <ProgressPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/user/vocabulary" 
+        element={
+          <ProtectedRoute>
+            <VocabularyPage />
           </ProtectedRoute>
         } 
       />

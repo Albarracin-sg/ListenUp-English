@@ -32,7 +32,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relaciones
-  progress Progress[]
+  progress    Progress[]
+  vocabulary  VocabularyEntry[]
 
   @@map("users")
   @@index([email])
@@ -49,8 +50,9 @@ model Lesson {
   updatedAt   DateTime   @updatedAt
 
   // Relaciones
-  questions Question[]
-  progress  Progress[]
+  questions  Question[]
+  progress   Progress[]
+  vocabulary VocabularyEntry[]
 
   @@map("lessons")
   @@index([level])
@@ -89,4 +91,24 @@ model Progress {
 
   @@map("progress")
   @@index([userId, lessonId])
+}
+
+model VocabularyEntry {
+  id             String   @id @default(cuid())
+  userId         String
+  lessonId       String?
+  word           String
+  normalizedWord String
+  meaning        String
+  example        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson? @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+
+  @@map("vocabulary_entries")
+  @@index([userId])
+  @@index([lessonId])
+  @@unique([userId, normalizedWord])
 }
